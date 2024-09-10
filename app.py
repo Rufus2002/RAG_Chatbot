@@ -1,10 +1,10 @@
 #%% packages
 import os
 import streamlit as st
-import chromadb
 __import__('pysqlite3')
 import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+import chromadb
 import Groq
 from groq import Groq
 client = Groq(api_key=("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"))
