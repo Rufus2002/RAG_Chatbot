@@ -15,6 +15,7 @@ chroma_collection = chroma_client.get_or_create_collection("ipcc")
 
 #%%
 def rag(query, n_results=5):
+    print("RAG")
     res = chroma_collection.query(query_texts=[query], n_results=n_results)
     docs = res["documents"][0]
     joined_information = ';'.join([f'{doc}' for doc in docs])
