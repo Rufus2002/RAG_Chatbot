@@ -1,9 +1,7 @@
 streamlit
-chromadb
+chromadb==0.3.19
 groq
 pypdf
 langchain
 sentence-transformers
 panel
-protobuf==3.20.3
-sqlite3
