@@ -25,7 +25,9 @@ def rag(query, n_results=5):
               {"role": "user", "content":  f"Question: {query}. \n Information: {joined_information}"}],
     )
     content = chat_completion.choices[0].message.content
-    return content,docs
+    print(content)
+    print(docs)
+    return content, docs
 
 #%%
 st.header("Climate Change Chatbot")
