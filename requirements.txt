@@ -6,4 +6,4 @@ langchain
 sentence-transformers
 panel
 protobuf==3.20.3
-sqlite==3.36.0
+sqlite==3.0
