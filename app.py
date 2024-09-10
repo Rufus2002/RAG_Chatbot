@@ -10,7 +10,7 @@ from groq import Groq
 client = Groq(api_key=("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"))
 
 #%% data prep
-chroma_client = chromadb.PersistentClient(path="db")
+chroma_client = chromadb.PersistentClient(path="IPCC_AR6_WGII_TechnicalSummary.pdf")
 chroma_collection = chroma_client.get_or_create_collection("ipcc")
 
 #%%
