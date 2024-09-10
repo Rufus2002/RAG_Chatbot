@@ -38,7 +38,6 @@ user_query = st.text_input(label="", help="Ask here to learn about Climate Chang
 rag_response, raw_docs = rag(user_query)
 
 st.header("Raw Information")
-print(f"raw at 0: {raw_docs[0]}")
 print(len(raw_docs))
 st.text(f"Raw Response 0: {raw_docs[0]}")
 st.text(f"Raw Response 1: {raw_docs[1]}")
