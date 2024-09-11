@@ -19,15 +19,11 @@ ipcc_report_file = "IPCC_AR6_WGII_TechnicalSummary.pdf"
 reader = PdfReader(ipcc_report_file)
 ipcc_texts = [page.extract_text().strip() for page in reader.pages]
 ipcc_texts_filt = ipcc_texts[5:-5]
-print(f"Number of pages: {len(ipcc_texts_filt)}")
-ipcc_texts_filt
 ipcc_wo_header_footer = [re.sub(r'\d+\nTechnicalSummary', '', s) for s in ipcc_texts_filt]
 # remove \nTS
 ipcc_wo_header_footer = [re.sub(r'\nTS', '', s) for s in ipcc_wo_header_footer]
-
 # remove TS\n
 ipcc_wo_header_footer = [re.sub(r'TS\n', '', s) for s in ipcc_wo_header_footer]
-ipcc_wo_header_footer
 char_splitter = RecursiveCharacterTextSplitter(
     separators= ["\n\n", "\n", ". ", " ", ""],
     chunk_size=1000,
