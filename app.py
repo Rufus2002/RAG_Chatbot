@@ -7,6 +7,9 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import chromadb
 from pprint import pprint
 from pypdf import PdfReader
+import re
+import panel as pn
+from langchain.text_splitter import RecursiveCharacterTextSplitter, SentenceTransformersTokenTextSplitter
 import groq
 from groq import Groq
 client = Groq(api_key=("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"))
