@@ -5,14 +5,54 @@ __import__('pysqlite3')
 import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import chromadb
+from pprint import pprint
+from pypdf import PdfReader
 import groq
 from groq import Groq
 client = Groq(api_key=("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"))
 
 #%% data prep
-ipcc_report_file = ""
+ipcc_report_file = "IPCC_AR6_WGII_TechnicalSummary.pdf"
 reader = PdfReader(ipcc_report_file)
 ipcc_texts = [page.extract_text().strip() for page in reader.pages]
+ipcc_texts_filt = ipcc_texts[5:-5]
+print(f"Number of pages: {len(ipcc_texts_filt)}")
+ipcc_texts_filt
+ipcc_wo_header_footer = [re.sub(r'\d+\nTechnicalSummary', '', s) for s in ipcc_texts_filt]
+# remove \nTS
+ipcc_wo_header_footer = [re.sub(r'\nTS', '', s) for s in ipcc_wo_header_footer]
+
+# remove TS\n
+ipcc_wo_header_footer = [re.sub(r'TS\n', '', s) for s in ipcc_wo_header_footer]
+ipcc_wo_header_footer
+char_splitter = RecursiveCharacterTextSplitter(
+    separators= ["\n\n", "\n", ". ", " ", ""],
+    chunk_size=1000,
+    chunk_overlap=0.2
+    )
+
+texts_char_splitted = char_splitter.split_text('\n\n'.join(ipcc_wo_header_footer))
+token_splitter = SentenceTransformersTokenTextSplitter(
+    chunk_overlap=0.2,
+    tokens_per_chunk=256
+    )
+
+texts_token_splitted = []
+for text in texts_char_splitted:
+    try:
+        texts_token_splitted.extend(token_splitter.split_text(text))
+    except:
+        print(f"Error in text: {text}")
+        continue
+print(texts_token_splitted[0])
+# %% Vector Database
+chroma_client = chromadb.PersistentClient(path="db")
+chroma_collection = chroma_client.get_or_create_collection("ipcc")
+ids = [str(i) for i in range(len(texts_token_splitted))]
+chroma_collection.add(
+    ids=ids,
+    documents=texts_token_splitted
+    )
 
 #%%
 def rag(query, n_results=5):
