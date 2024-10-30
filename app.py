@@ -12,10 +12,10 @@ import panel as pn
 from langchain.text_splitter import RecursiveCharacterTextSplitter, SentenceTransformersTokenTextSplitter
 import groq
 from groq import Groq
-client = Groq(api_key=("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"))
+client = Groq(api_key=("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"))
 
 #%% data prep
-ipcc_report_file = "IPCC_AR6_WGII_TechnicalSummary.pdf"
+ipcc_report_file = "SampleContract-Shuttle.pdf"
 reader = PdfReader(ipcc_report_file)
 ipcc_texts = [page.extract_text().strip() for page in reader.pages]
 ipcc_texts_filt = ipcc_texts[5:-5]
