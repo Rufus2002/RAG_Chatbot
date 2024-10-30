@@ -43,7 +43,7 @@ for text in texts_char_splitted:
     except:
         print(f"Error in text: {text}")
         continue
-print(texts_token_splitted[0])
+#print(texts_token_splitted[0])
 # %% Vector Database
 chroma_client = chromadb.PersistentClient(path="db")
 chroma_collection = chroma_client.get_or_create_collection("ipcc")
@@ -71,10 +71,10 @@ def rag(query, n_results=5):
     return content, docs
 
 #%%
-st.header("Climate Change Chatbot")
+st.header("Contract Clauses Chatbot")
 
 # text input field
-user_query = st.text_input(label="", help="Ask here to learn about Climate Change", placeholder="What do you want to know about climate change?")
+user_query = st.text_input(label="", help="Ask here to learn about Contract Management", placeholder="What do you want to know about climate change?")
 
 rag_response, raw_docs = rag(user_query)
 
