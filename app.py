@@ -16,7 +16,7 @@ client = Groq(api_key=("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
 
 #%% data prep
 ipcc_report_file = "SampleContract-Shuttle.pdf"
-reader = PdfReader(ipcc_report_file)
+"""reader = PdfReader(ipcc_report_file)
 ipcc_texts = [page.extract_text().strip() for page in reader.pages]
 ipcc_texts_filt = ipcc_texts[5:-5]
 ipcc_wo_header_footer = [re.sub(r'\d+\nTechnicalSummary', '', s) for s in ipcc_texts_filt]
@@ -43,10 +43,10 @@ for text in texts_char_splitted:
     except:
         print(f"Error in text: {text}")
         continue
-#print(texts_token_splitted[0])
+print(texts_token_splitted[0])"""
 # %% Vector Database
 chroma_client = chromadb.PersistentClient(path="db")
-chroma_collection = chroma_client.get_or_create_collection("ipcc")
+chroma_collection = chroma_client.get_or_create_collection("ipcc_report_file")
 ids = [str(i) for i in range(len(texts_token_splitted))]
 chroma_collection.add(
     ids=ids,
