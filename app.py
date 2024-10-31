@@ -16,20 +16,20 @@ client = Groq(api_key=("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
 
 #%% data prep
 ipcc_report_file = "SampleContract-Shuttle.pdf"
-"""reader = PdfReader(ipcc_report_file)
+reader = PdfReader(ipcc_report_file)
 ipcc_texts = [page.extract_text().strip() for page in reader.pages]
 ipcc_texts_filt = ipcc_texts[5:-5]
-ipcc_wo_header_footer = [re.sub(r'\d+\nTechnicalSummary', '', s) for s in ipcc_texts_filt]
+"""ipcc_wo_header_footer = [re.sub(r'\d+\nTechnicalSummary', '', s) for s in ipcc_texts_filt]
 # remove \nTS
 ipcc_wo_header_footer = [re.sub(r'\nTS', '', s) for s in ipcc_wo_header_footer]
 # remove TS\n
-ipcc_wo_header_footer = [re.sub(r'TS\n', '', s) for s in ipcc_wo_header_footer]
+ipcc_wo_header_footer = [re.sub(r'TS\n', '', s) for s in ipcc_wo_header_footer]"""
 char_splitter = RecursiveCharacterTextSplitter(
     separators= ["\n\n", "\n", ". ", " ", ""],
     chunk_size=1000,
     chunk_overlap=0.2
     )
-
+print(char_splitter)
 texts_char_splitted = char_splitter.split_text('\n\n'.join(ipcc_wo_header_footer))
 token_splitter = SentenceTransformersTokenTextSplitter(
     chunk_overlap=0.2,
