@@ -76,14 +76,6 @@ st.header("Contract Clauses Chatbot")
 user_query = st.text_input(label="", help="Ask here to learn about Contract Management", placeholder="What do you want to know about the Project contract?")
 rag_response, raw_docs = rag(user_query)
 
-#Raw Information for better analysis
-"""st.header("Raw Information")
-print(len(raw_docs))
-st.text(f"Raw Response 0: {raw_docs[0]}")
-st.text(f"Raw Response 1: {raw_docs[1]}")
-st.text(f"Raw Response 2: {raw_docs[2]}")
-st.text(f"Raw Response 3: {raw_docs[3]}")
-st.text(f"Raw Response 4: {raw_docs[4]}")"""
 
 
 st.header("RAG Response")
