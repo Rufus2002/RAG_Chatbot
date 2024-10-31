@@ -42,8 +42,6 @@ for text in texts_char_splitted:
         print(f"Error in text: {text} - {e}")
         continue
 
-print("Sample token-split text:", texts_token_splitted[0])
-
 # Step 3: Vector Database - ChromaDB
 chroma_client = chromadb.PersistentClient(path="db")
 chroma_collection = chroma_client.get_or_create_collection("ipcc_report_file")
@@ -55,8 +53,6 @@ chroma_collection.add(
     documents=texts_token_splitted
 )
 
-print("Documents successfully added to the ChromaDB collection.")
-
 #%%
 def rag(query, n_results=5):
     print("RAG")
@@ -66,7 +62,7 @@ def rag(query, n_results=5):
     chat_completion=client.chat.completions.create(
       model="llama3-8b-8192",
       messages=[
-          {"role": "system", "content": "You are a climate specialist. Answer the user's question based on the provided document."},
+          {"role": "system", "content": "You are a Contract Analyst. Answer the user's question based on the provided document."},
               {"role": "user", "content":  f"Question: {query}. \n Information: {joined_information}"}],
     )
     content = chat_completion.choices[0].message.content
@@ -78,7 +74,7 @@ def rag(query, n_results=5):
 st.header("Contract Clauses Chatbot")
 
 # text input field
-user_query = st.text_input(label="", help="Ask here to learn about Contract Management", placeholder="What do you want to know about climate change?")
+user_query = st.text_input(label="", help="Ask here to learn about Contract Management", placeholder="What do you want to know about the Project contract?")
 
 rag_response, raw_docs = rag(user_query)
 
