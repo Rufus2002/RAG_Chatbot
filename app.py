@@ -15,43 +15,47 @@ from groq import Groq
 client = Groq(api_key=("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"))
 
 #%% data prep
+# Step 1: Data Preparation
 ipcc_report_file = "SampleContract-Shuttle.pdf"
 reader = PdfReader(ipcc_report_file)
 ipcc_texts = [page.extract_text().strip() for page in reader.pages]
-ipcc_texts_filt = ipcc_texts[5:-5]
-"""ipcc_wo_header_footer = [re.sub(r'\d+\nTechnicalSummary', '', s) for s in ipcc_texts_filt]
-# remove \nTS
-ipcc_wo_header_footer = [re.sub(r'\nTS', '', s) for s in ipcc_wo_header_footer]
-# remove TS\n
-ipcc_wo_header_footer = [re.sub(r'TS\n', '', s) for s in ipcc_wo_header_footer]"""
+
+# Step 2: Text Splitting
 char_splitter = RecursiveCharacterTextSplitter(
-    separators= ["\n\n", "\n", ". ", " ", ""],
+    separators=["\n\n", "\n", ". ", " ", ""],
     chunk_size=1000,
     chunk_overlap=0.2
-    )
-print(char_splitter)
-texts_char_splitted = char_splitter.split_text('\n\n'.join(ipcc_wo_header_footer))
+)
+texts_char_splitted = char_splitter.split_text('\n\n'.join(ipcc_texts))
+
 token_splitter = SentenceTransformersTokenTextSplitter(
     chunk_overlap=0.2,
     tokens_per_chunk=256
-    )
+)
 
+# Split text into tokens
 texts_token_splitted = []
 for text in texts_char_splitted:
     try:
         texts_token_splitted.extend(token_splitter.split_text(text))
-    except:
-        print(f"Error in text: {text}")
+    except Exception as e:
+        print(f"Error in text: {text} - {e}")
         continue
-print(texts_token_splitted[0])"""
-# %% Vector Database
+
+print("Sample token-split text:", texts_token_splitted[0])
+
+# Step 3: Vector Database - ChromaDB
 chroma_client = chromadb.PersistentClient(path="db")
 chroma_collection = chroma_client.get_or_create_collection("ipcc_report_file")
+
+# Add documents to the collection
 ids = [str(i) for i in range(len(texts_token_splitted))]
 chroma_collection.add(
     ids=ids,
     documents=texts_token_splitted
-    )
+)
+
+print("Documents successfully added to the ChromaDB collection.")
 
 #%%
 def rag(query, n_results=5):
